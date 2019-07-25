@@ -39,7 +39,7 @@
           <div class="card-body">
             <h5 class="card-title">Request a pool</h5>
             <p class="card-text">Get a ride from someone near you!</p>
-            <a href="request_pool" class="btn btn-primary stretched-link">Request</a>
+            <a class="btn btn-primary stretched-link" data-toggle="modal" data-target="#requestModal">Request</a>
           </div>
         </div>
         
@@ -48,7 +48,7 @@
           <div class="card-body">
             <h5 class="card-title">Host a pool</h5>
             <p class="card-text">Give a ride to 1 or more people near you!</p>
-            <a href="host_pool" class="btn btn-secondary stretched-link">Host</a>
+            <a class="btn btn-secondary stretched-link" data-toggle="modal" data-target="#hostModal">Host</a>
           </div>
         </div>
         
@@ -57,7 +57,153 @@
           <div class="card-body">
             <h5 class="card-title">View all pools</h5>
             <p class="card-text">See every currently waiting carpool!</p>
-            <a href="view_pools" class="btn btn-info stretched-link">View</a>
+            <a class="btn btn-info stretched-link">View</a>
+          </div>
+        </div>
+        
+        <div class="modal fade" id="requestModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+          <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Request a pool</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                  
+                <div class="container">
+                    <div class="row justify-content-md-center form-group">
+                        <div class="col-md-12">
+                            <form class="form-signin">
+                                <div class="form-label-group">
+                                    <input type="text" class="form-control" id="formGroupExampleInput" placeholder="Name" 
+                                    required autofocus>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+                    <div class="row justify-content-md-center form-group">
+                        <div class="col-md-12">
+                            <form class="form-signin">
+                                <div class="form-label-group">
+                                    <input type="text" class="form-control" id="formGroupExampleInput" placeholder="From" 
+                                    required autofocus>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="row justify-content-md-center form-group">
+                        <div class="col-md-12">
+                            <form class="form-signin">
+                                <div class="form-label-group">
+                                    <input type="text" class="form-control" id="formGroupExampleInput" placeholder="To" 
+                                    required autofocus>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    
+                    <div class="row justify-content-md-center form-group">
+                        <div class="col-md-6">
+                            <form class="form-signin">
+                                <div class="form-label-group">
+                                    <input type="text" class="form-control" id="formGroupExampleInput" placeholder="# of people" 
+                                    required autofocus>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="col-md-6">
+                            <form class="form-signin">
+                                <div class="form-label-group">
+                                    <input type="text" class="form-control" id="formGroupExampleInput" placeholder="Time leaving" 
+                                    required autofocus>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    
+                </div>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary">Go!</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="modal fade" id="hostModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+          <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Host a pool</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                  
+                <div class="container">
+                    <div class="row justify-content-md-center form-group">
+                        <div class="col-md-12">
+                            <form class="form-signin">
+                                <div class="form-label-group">
+                                    <input type="text" class="form-control" id="formGroupExampleInput" placeholder="Name" 
+                                    required autofocus>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+                    <div class="row justify-content-md-center form-group">
+                        <div class="col-md-12">
+                            <form class="form-signin">
+                                <div class="form-label-group">
+                                    <input type="text" class="form-control" id="formGroupExampleInput" placeholder="From" 
+                                    required autofocus>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="row justify-content-md-center form-group">
+                        <div class="col-md-12">
+                            <form class="form-signin">
+                                <div class="form-label-group">
+                                    <input type="text" class="form-control" id="formGroupExampleInput" placeholder="To" 
+                                    required autofocus>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    
+                    <div class="row justify-content-md-center form-group">
+                        <div class="col-md-6">
+                            <form class="form-signin">
+                                <div class="form-label-group">
+                                    <input type="text" class="form-control" id="formGroupExampleInput" placeholder="# of open seats" 
+                                    required autofocus>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="col-md-6">
+                            <form class="form-signin">
+                                <div class="form-label-group">
+                                    <input type="text" class="form-control" id="formGroupExampleInput" placeholder="Time leaving" 
+                                    required autofocus>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    
+                </div>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary">Go!</button>
+              </div>
+            </div>
           </div>
         </div>
         
