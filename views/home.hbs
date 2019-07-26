@@ -34,7 +34,7 @@
     <div class="card-deck center_card_deck">
         
         
-        <div class="card text-white bg-primary text-center mb-3" style="max-width: 18rem;">
+        <div class="card text-white bg-primary text-center mb-2" style="max-width: 27rem;">
           <div class="card-header"> </div>
           <div class="card-body">
             <h5 class="card-title">Request a pool</h5>
@@ -43,23 +43,15 @@
           </div>
         </div>
         
-        <div class="card text-white bg-secondary text-center mb-3" style="max-width: 18rem;">
+        <div class="card text-white bg-success text-center mb-2" style="max-width: 27rem;">
           <div class="card-header"> </div>
           <div class="card-body">
             <h5 class="card-title">Host a pool</h5>
             <p class="card-text">Give a ride to 1 or more people near you!</p>
-            <a class="btn btn-secondary stretched-link" data-toggle="modal" data-target="#hostModal">Host</a>
+            <a class="btn btn-success stretched-link" data-toggle="modal" data-target="#hostModal">Host</a>
           </div>
         </div>
         
-        <div class="card text-white bg-info text-center mb-3" style="max-width: 18rem;">
-          <div class="card-header"> </div>
-          <div class="card-body">
-            <h5 class="card-title">View all pools</h5>
-            <p class="card-text">See every currently waiting carpool!</p>
-            <a class="btn btn-info stretched-link">View</a>
-          </div>
-        </div>
         
         <div class="modal fade" id="requestModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
           <div class="modal-dialog modal-dialog-centered" role="document">
@@ -77,7 +69,7 @@
                         <div class="col-md-12">
                             <form class="form-signin">
                                 <div class="form-label-group">
-                                    <input type="text" class="form-control" id="formGroupExampleInput" placeholder="Name" 
+                                    <input type="text" class="form-control" id="reqName" placeholder="Name" 
                                     required autofocus>
                                 </div>
                             </form>
@@ -88,7 +80,7 @@
                         <div class="col-md-12">
                             <form class="form-signin">
                                 <div class="form-label-group">
-                                    <input type="text" class="form-control" id="formGroupExampleInput" placeholder="From" 
+                                    <input type="text" class="form-control" id="reqFrom" placeholder="From" 
                                     required autofocus>
                                 </div>
                             </form>
@@ -98,7 +90,7 @@
                         <div class="col-md-12">
                             <form class="form-signin">
                                 <div class="form-label-group">
-                                    <input type="text" class="form-control" id="formGroupExampleInput" placeholder="To" 
+                                    <input type="text" class="form-control" id="reqTo" placeholder="To" 
                                     required autofocus>
                                 </div>
                             </form>
@@ -106,18 +98,20 @@
                     </div>
                     
                     <div class="row justify-content-md-center form-group">
-                        <div class="col-md-6">
+                        <div class="col-md-12">
                             <form class="form-signin">
                                 <div class="form-label-group">
-                                    <input type="text" class="form-control" id="formGroupExampleInput" placeholder="# of people" 
+                                    <input type="text" class="form-control" id="reqNum" placeholder="# of people (besides you)" 
                                     required autofocus>
                                 </div>
                             </form>
                         </div>
-                        <div class="col-md-6">
+                    </div>
+                    <div class="row justify-content-md-center form-group">
+                        <div class="col-md-12">
                             <form class="form-signin">
                                 <div class="form-label-group">
-                                    <input type="text" class="form-control" id="formGroupExampleInput" placeholder="Time leaving" 
+                                    <input type="text" class="form-control" id="reqTime" placeholder="Time leaving" 
                                     required autofocus>
                                 </div>
                             </form>
@@ -128,7 +122,7 @@
               </div>
               <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                <button type="button" class="btn btn-primary">Go!</button>
+                <button id="send_req_button" type="button" class="btn btn-primary" data-dismiss="modal" onclick="sendRequest()">Go!</button>
               </div>
             </div>
           </div>
@@ -138,70 +132,18 @@
           <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
               <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLongTitle">Host a pool</h5>
+                <h5 class="modal-title" id="exampleModalLongTitle">All current pools</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                   <span aria-hidden="true">&times;</span>
                 </button>
               </div>
               <div class="modal-body">
-                  
-                <div class="container">
-                    <div class="row justify-content-md-center form-group">
-                        <div class="col-md-12">
-                            <form class="form-signin">
-                                <div class="form-label-group">
-                                    <input type="text" class="form-control" id="formGroupExampleInput" placeholder="Name" 
-                                    required autofocus>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-
-                    <div class="row justify-content-md-center form-group">
-                        <div class="col-md-12">
-                            <form class="form-signin">
-                                <div class="form-label-group">
-                                    <input type="text" class="form-control" id="formGroupExampleInput" placeholder="From" 
-                                    required autofocus>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                    <div class="row justify-content-md-center form-group">
-                        <div class="col-md-12">
-                            <form class="form-signin">
-                                <div class="form-label-group">
-                                    <input type="text" class="form-control" id="formGroupExampleInput" placeholder="To" 
-                                    required autofocus>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                    
-                    <div class="row justify-content-md-center form-group">
-                        <div class="col-md-6">
-                            <form class="form-signin">
-                                <div class="form-label-group">
-                                    <input type="text" class="form-control" id="formGroupExampleInput" placeholder="# of open seats" 
-                                    required autofocus>
-                                </div>
-                            </form>
-                        </div>
-                        <div class="col-md-6">
-                            <form class="form-signin">
-                                <div class="form-label-group">
-                                    <input type="text" class="form-control" id="formGroupExampleInput" placeholder="Time leaving" 
-                                    required autofocus>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                    
-                </div>
+                  <ul id="toAppend" class="list-group">
+                      
+                  </ul>
               </div>
               <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                <button type="button" class="btn btn-primary">Go!</button>
               </div>
             </div>
           </div>
@@ -210,10 +152,11 @@
     </div>
     
     
-    
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    {{!--<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>--}}
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="js/events.js"></script>
 </body>
 </html>

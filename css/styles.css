@@ -1,6 +1,12 @@
 .center_card_deck {
   margin: auto;
-  width: 50%;
-  border: 3px solid green;
+  width: 60%;
   padding: 10px;
+}
+.center {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 10%;
+  height: 10%;
 }
