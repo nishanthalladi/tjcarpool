@@ -10,3 +10,10 @@
   width: 10%;
   height: 10%;
 }
+.card_img {
+  /*display: block;*/
+  /*margin-left: auto;*/
+  /*margin-right: auto;*/
+  width: 5%;
+  height: 5%;
+}

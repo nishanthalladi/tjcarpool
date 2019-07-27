@@ -14,6 +14,14 @@ String.prototype.hashCode = function() {
   return hash;
 };
 
+function toLogin(){
+    window.location.href = "https://carpool.sites.tjhsst.edu/login";
+}
+
+
+function toLogout(){
+    window.location.href = "https://carpool.sites.tjhsst.edu/logout";
+}
 function sendRequest(){
     var reqName = document.getElementById("reqName").value;
     var reqTo = document.getElementById("reqTo").value;
@@ -75,7 +83,15 @@ function makeCard(hash, name, to, from, num, time, timestamp){
     _div.className = "card-body";
     
     var inner_2 = document.createElement('p');
-    var node = document.createTextNode(name + " and " + num + " others want to go from " + from + " to " + to + " at " + time);
+    if (num == "0"){
+        var node = document.createTextNode(name + " wants to go from " + to + " to " + from + " at " + time);
+    }
+    else if (num == "1"){
+        var node = document.createTextNode(name + " and " + num + " other want to go from " + to + " to " + from + " at " + time);
+    }
+    else {
+        var node = document.createTextNode(name + " and " + num + " others want to go from " + to + " to " + from + " at " + time);
+    }
     inner_2.appendChild(node);
     
     var footer = document.createElement('div');
