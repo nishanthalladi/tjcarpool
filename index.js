@@ -7,6 +7,7 @@ var request = require('request');
 // -------------- load packages -------------- //
 var cookieSession = require('cookie-session')
 var simpleoauth2 = require("simple-oauth2");
+var nodemailer = require('nodemailer');
 
 
 // These are keys that we'll use to encrypt our cookie session.
@@ -61,7 +62,11 @@ var pool  = mysql.createPool(sqlParams);
 // });
 
 app.get("/write_sql", function(req, res){
-    pool.query('insert into pools set ?', req.query, function(error, results, fields) {
+    dict = req.query;
+    dict['name'] = req.session.token.user_info['display_name'];
+    dict['email'] = req.session.token.user_info['tj_email'];
+    console.log(dict['name'] + " " + dict['email'])
+    pool.query('insert into pools set ?', dict, function(error, results, fields) {
        if (error) throw error; 
     });
 });
@@ -74,11 +79,53 @@ app.get("/read_sql", function(req, res){
 });
 
 app.get("/del_sql", function(req, res){
-    pool.query('delete from pools where hash=?', req.query.hash
-        ,function(error, results, fields) {
-       if (error) throw error; 
-       res.send(results);
+    pool.query('select name, email from pools where hash=?', req.query.hash,function(error, results, fields) {
+        if (error) throw error; 
+        // res.send(results);
+       
+        var transporter = nodemailer.createTransport({
+          service: 'gmail',
+          auth: {
+            user: 'tjcarpool.noreply@gmail.com',
+            pass: 'doctorbonitatibus'
+          }
+        });
+        
+        var mailOptions = {
+          from: 'tjcarpool.noreply@gmail.com',
+          to: results[0]['email'] ,
+          subject: 'You are being hosted! (TJ Carpool)',
+          text: req.session.token.user_info['display_name'] + " (" + results[0]['email'] + ") has volunteered to host you!"
+        };
+        var mailOptions2 = {
+          from: 'tjcarpool.noreply@gmail.com',
+          to: req.session.token.user_info['tj_email'],
+          subject: 'You are hosting! (TJ Carpool)',
+          text: "You are hosting " + results[0]['name'] + "! (" + results[0]['email'] + ")"
+        };
+        
+        transporter.sendMail(mailOptions, function(error, info){
+          if (error) {
+            console.log(error);
+          } else {
+            console.log('Email sent: ' + info.response);
+          }
+        });
+        transporter.sendMail(mailOptions2, function(error, info){
+          if (error) {
+            console.log(error);
+          } else {
+            console.log('Email sent: ' + info.response);
+          }
+        });
+        
+        pool.query('delete from pools where hash=?', req.query.hash
+            ,function(error, results, fields) {
+           if (error) throw error; 
+           res.send(results);
+        });
     });
+    
 });
 
 app.use('/js', express.static(path.join(__dirname, 'js')))
@@ -148,7 +195,7 @@ app.get('/', function (req, res) {
     
 
     // Here we ask if the token key has been attached to the session...
-    if (req.session.token == null || typeof(req.session.token) == undefined) {
+    if (req.session.token == null || typeof(req.session.token) == undefined || req.session.token['']) {
         // ...if the token does not exist, this means that the user has not logged in
     
         // THIS GENERATES AN HTML PAGE BY COMBINING STRINGS.
@@ -191,6 +238,9 @@ app.get('/', function (req, res) {
             // The response from ION was a JSON string, so we have to turn it
             // back into a javascript object
             var res_object = JSON.parse(body);
+            
+            req.session.token.user_info = res_object;
+            // console.log(res_object);
             
             // from this javascript object, extract the user's name
             // user_name = res_object['short_name'];

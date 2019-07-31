@@ -22,16 +22,17 @@ function toLogin(){
 function toLogout(){
     window.location.href = "https://carpool.sites.tjhsst.edu/logout";
 }
+
+
 function sendRequest(){
-    var reqName = document.getElementById("reqName").value;
     var reqTo = document.getElementById("reqTo").value;
     var reqFrom = document.getElementById("reqFrom").value;
     var reqNum = document.getElementById("reqNum").value;
     var reqTime = document.getElementById("reqTime").value;
     console.log("hello");
-    var toHash = reqName + reqTo + reqFrom + reqNum + reqTime;
+    var toHash = reqTo + reqFrom + reqNum + reqTime;
     var hash = toHash.hashCode();
-    var new_pool = {hash: hash, name: reqName, start: reqFrom, destination: reqTo, num: reqNum, time: reqTime};
+    var new_pool = {hash: hash, start: reqFrom, destination: reqTo, num: reqNum, time: reqTime};
     
     $.ajax ({
         url: "write_sql",
@@ -147,4 +148,19 @@ function makeListElement(hash, name, to, from, num, time, timestamp){
 
 }
 
+function initMap() {
+    var myLatlng = {lat: -25.363, lng: 131.044};
+    
+    var map = new google.maps.Map(document.getElementById('fromMap'), {
+      zoom: 4,
+      center: myLatlng 
+    });
+    
+    var myLatlng = {lat: -25.363, lng: 131.044};
+    
+    var map = new google.maps.Map(document.getElementById('toMap'), {
+      zoom: 4,
+      center: myLatlng 
+    });
+}
 // document.getElementById("send_req_button").addEventListener("click", sendRequest);   
