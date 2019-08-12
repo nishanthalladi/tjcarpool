@@ -149,18 +149,18 @@ function makeListElement(hash, name, to, from, num, time, timestamp){
 }
 
 function initMap() {
-    var myLatlng = {lat: -25.363, lng: 131.044};
+    var myLatlng = {lat: 38.818747, lng: -77.168755};
     
     var map = new google.maps.Map(document.getElementById('fromMap'), {
-      zoom: 4,
+      zoom: 14,
       center: myLatlng 
     });
     
-    var myLatlng = {lat: -25.363, lng: 131.044};
+    // var myLatlng = {lat: -25.363, lng: 131.044};
     
-    var map = new google.maps.Map(document.getElementById('toMap'), {
-      zoom: 4,
-      center: myLatlng 
-    });
+    // var map = new google.maps.Map(document.getElementById('toMap'), {
+    //   zoom: 4,
+    //   center: myLatlng 
+    // });
 }
 // document.getElementById("send_req_button").addEventListener("click", sendRequest);   

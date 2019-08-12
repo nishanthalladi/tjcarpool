@@ -91,17 +91,19 @@ app.get("/del_sql", function(req, res){
           }
         });
         
+        var mails = []
+        
         var mailOptions = {
           from: 'tjcarpool.noreply@gmail.com',
           to: results[0]['email'] ,
           subject: 'You are being hosted! (TJ Carpool)',
-          text: req.session.token.user_info['display_name'] + " (" + results[0]['email'] + ") has volunteered to host you!"
+          text: req.session.token.user_info['display_name'] + " has volunteered to drive you from " + results[0]['start'] + " to " + results[0]['destination'] + " at " + results[0]['time'] + "."
         };
         var mailOptions2 = {
           from: 'tjcarpool.noreply@gmail.com',
           to: req.session.token.user_info['tj_email'],
           subject: 'You are hosting! (TJ Carpool)',
-          text: "You are hosting " + results[0]['name'] + "! (" + results[0]['email'] + ")"
+          text: "You are driving " + results[0]['name'] + " (" + results[0]['email'] + ") from " + results[0]['start'] + " to " + results[0]['destination'] + " at " + results[0]['time'] + "."
         };
         
         transporter.sendMail(mailOptions, function(error, info){
@@ -111,6 +113,8 @@ app.get("/del_sql", function(req, res){
             console.log('Email sent: ' + info.response);
           }
         });
+        
+        
         transporter.sendMail(mailOptions2, function(error, info){
           if (error) {
             console.log(error);
@@ -195,7 +199,7 @@ app.get('/', function (req, res) {
     
 
     // Here we ask if the token key has been attached to the session...
-    if (req.session.token == null || typeof(req.session.token) == undefined || req.session.token['']) {
+    if (req.session.token == null || typeof(req.session.token) == undefined) {
         // ...if the token does not exist, this means that the user has not logged in
     
         // THIS GENERATES AN HTML PAGE BY COMBINING STRINGS.
@@ -240,7 +244,7 @@ app.get('/', function (req, res) {
             var res_object = JSON.parse(body);
             
             req.session.token.user_info = res_object;
-            // console.log(res_object);
+            console.log(res_object);
             
             // from this javascript object, extract the user's name
             // user_name = res_object['short_name'];
