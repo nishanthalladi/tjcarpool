@@ -45,6 +45,10 @@ function sendRequest(){
     cycle();
 }
 
+function obliterate(){
+    
+}
+
 function cycle(){
     
     $.ajax ({
@@ -70,6 +74,58 @@ function cycle(){
             });
         },
         error: function(stat, err) {}
+    });
+}
+
+fromMarker;
+toMarker;
+
+function submitAdresses(geocoder, resultsMap){
+    geocodeFromAddress(geocoder, resultsMap)
+    geocodeToAddress(geocoder, resultsMap)
+    var bounds = new google.maps.LatLngBounds();
+    bounds.extend(fromMarker.getPosition());
+    bounds.extend(toMarker.getPosition());
+    resultsMap.fitBounds(bounds);
+}
+
+
+function geocodeFromAddress(geocoder, resultsMap) {
+    var address = document.getElementById('reqFrom').value;
+    geocoder.geocode({'address': address}, function(results, status) {
+        if (status === 'OK') {
+        // resultsMap.setCenter(results[0].geometry.location);
+        var marker = new google.maps.Marker({
+            map: resultsMap,
+            position: results[0].geometry.location
+        });
+        if (fromMarker != null && fromMarker != undefined){
+            fromMarker.setMap(null)
+            fromMarker = null
+        }
+        fromMarker = marker
+        } else {
+            alert('Geocode was not successful for the following reason: ' + status);
+        }
+    });
+}
+
+function geocodeToAddress(geocoder, resultsMap) {
+    var address = document.getElementById('reqTo').value;
+    geocoder.geocode({'address': address}, function(results, status) {
+        if (status === 'OK') {
+        // resultsMap.setCenter(results[0].geometry.location);
+        var marker = new google.maps.Marker({
+            map: resultsMap,
+            position: results[0].geometry.location
+        });
+        if (toMarker != null && toMarker != undefined){
+            toMarker.setMap(null)
+        }
+        toMarker = marker
+        } else {
+            alert('Geocode was not successful for the following reason: ' + status);
+        }
     });
 }
 
