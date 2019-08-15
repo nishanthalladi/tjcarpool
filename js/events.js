@@ -89,17 +89,17 @@ var fromMarker;
 var toMarker;
 var bounds;
 
-function submitAddresses(geocoder, resultsMap, directionsService, directionsDisplay){
+function submitAddresses(from_addy, to_addy, geocoder, resultsMap, directionsService, directionsDisplay){
     bounds = new google.maps.LatLngBounds();
-    geocodeFromAddress(geocoder, resultsMap, geocodeToAddress, directionsService, directionsDisplay)
+    geocodeFromAddress(from_addy, to_addy, geocoder, resultsMap, geocodeToAddress, directionsService, directionsDisplay)
     // geocodeToAddress(geocoder, resultsMap)
     // console.log(fromMarker.getPosition() + " " + toMarker.getPosition())
     
 }
 
 
-function geocodeFromAddress(geocoder, resultsMap, callback, directionsService, directionsDisplay) {
-    var address = document.getElementById('reqFrom').value;
+function geocodeFromAddress(from_addy, to_addy, geocoder, resultsMap, callback, directionsService, directionsDisplay) {
+    var address = from_addy
     geocoder.geocode({'address': address}, function(results, status) {
         if (status === 'OK') {
         // resultsMap.setCenter(results[0].geometry.location);
@@ -114,15 +114,15 @@ function geocodeFromAddress(geocoder, resultsMap, callback, directionsService, d
         fromMarker = marker
         bounds.extend(marker.getPosition())
         resultsMap.fitBounds(bounds);
-        callback(geocoder, resultsMap, giveDirs, directionsService, directionsDisplay)
+        callback(from_addy, to_addy, geocoder, resultsMap, giveDirs, directionsService, directionsDisplay)
         } else {
             alert('Geocode was not successful for the following reason: ' + status);
         }
     });
 }
 
-function geocodeToAddress(geocoder, resultsMap, callback, directionsService, directionsDisplay) {
-    var address = document.getElementById('reqTo').value;
+function geocodeToAddress(from_addy, to_addy, geocoder, resultsMap, callback, directionsService, directionsDisplay) {
+    var address = to_addy
     geocoder.geocode({'address': address}, function(results, status) {
         if (status === 'OK') {
         // resultsMap.setCenter(results[0].geometry.location);
@@ -136,7 +136,7 @@ function geocodeToAddress(geocoder, resultsMap, callback, directionsService, dir
         toMarker = marker
         bounds.extend(marker.getPosition())
         resultsMap.fitBounds(bounds);
-        callback(document.getElementById('reqFrom').value, address, directionsService, directionsDisplay)
+        callback(from_addy, address, directionsService, directionsDisplay)
         } else {
             alert('Geocode was not successful for the following reason: ' + status);
         }
@@ -212,9 +212,41 @@ function makeCard(hash, name, to, from, num, time, timestamp){
         // console.log({name: name, start: from, destination: to, num: num, time: time})
     };
     
+    var map_div = document.createElement('div');
+    map_div.id = hash + "map_div"
+    map_div.style.width = "400px"
+    map_div.style.height = "400px"
+    map_div.style.display = "none"
+    
+    var btn_2 = document.createElement('a');
+    btn_2.id = hash + "btn2";
+    btn_2.className = "btn btn-light close";
+    var node_4 = document.createTextNode("Show/Hide Map");
+    btn_2.appendChild(node_4);
+    
+    btn_2.onclick = function(){
+      var x = document.getElementById(hash + "map_div");
+      if (x.style.display != "block") {
+          x.style.display = "block";
+          document.getElementById(hash + "btn2").style.display = "none"
+        var myLatlng = {lat: 38.818747, lng: -77.168755};
+        
+        var map = new google.maps.Map(document.getElementById(hash + "map_div"), {
+          zoom: 14,
+          center: myLatlng 
+        });
+        var geocoder = new google.maps.Geocoder();
+        var directionsService = new google.maps.DirectionsService;
+        var directionsDisplay = new google.maps.DirectionsRenderer({map: map});
+        submitAddresses(to, from, geocoder, map, directionsService, directionsDisplay);
+      }
+    };
+    
     inner_1.appendChild(inner_2);
+    inner_1.appendChild(map_div);
     _div.appendChild(inner_1);
     _div.appendChild(btn);
+    _div.appendChild(btn_2);
     _div.appendChild(footer);
     
     sharedPref[hash] = _div;
@@ -249,7 +281,7 @@ function initMap() {
     var directionsService = new google.maps.DirectionsService;
     var directionsDisplay = new google.maps.DirectionsRenderer({map: map});
     document.getElementById('submitAddresses').addEventListener('click', function() {
-      submitAddresses(geocoder, map, directionsService, directionsDisplay);
+      submitAddresses(document.getElementById('reqFrom'), document.getElementById('reqTo'), geocoder, map, directionsService, directionsDisplay);
     });
     // var myLatlng = {lat: -25.363, lng: 131.044};
     
