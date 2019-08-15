@@ -2,6 +2,13 @@ sharedPref = {};
 
 cycle();
 
+$(document).keypress(
+  function(event){
+    if (event.which == '13') {
+      event.preventDefault();
+    }
+});
+
 
 String.prototype.hashCode = function() {
   var hash = 0, i, chr;
@@ -81,16 +88,16 @@ var fromMarker;
 var toMarker;
 var bounds;
 
-function submitAddresses(geocoder, resultsMap){
-    geocodeFromAddress(geocoder, resultsMap)
-    geocodeToAddress(geocoder, resultsMap)
+function submitAddresses(geocoder, resultsMap, directionsService, directionsDisplay){
     bounds = new google.maps.LatLngBounds();
+    geocodeFromAddress(geocoder, resultsMap, geocodeToAddress, directionsService, directionsDisplay)
+    // geocodeToAddress(geocoder, resultsMap)
     // console.log(fromMarker.getPosition() + " " + toMarker.getPosition())
     
 }
 
 
-function geocodeFromAddress(geocoder, resultsMap) {
+function geocodeFromAddress(geocoder, resultsMap, callback, directionsService, directionsDisplay) {
     var address = document.getElementById('reqFrom').value;
     geocoder.geocode({'address': address}, function(results, status) {
         if (status === 'OK') {
@@ -106,13 +113,14 @@ function geocodeFromAddress(geocoder, resultsMap) {
         fromMarker = marker
         bounds.extend(marker.getPosition())
         resultsMap.fitBounds(bounds);
+        callback(geocoder, resultsMap, giveDirs, directionsService, directionsDisplay)
         } else {
             alert('Geocode was not successful for the following reason: ' + status);
         }
     });
 }
 
-function geocodeToAddress(geocoder, resultsMap) {
+function geocodeToAddress(geocoder, resultsMap, callback, directionsService, directionsDisplay) {
     var address = document.getElementById('reqTo').value;
     geocoder.geocode({'address': address}, function(results, status) {
         if (status === 'OK') {
@@ -127,9 +135,29 @@ function geocodeToAddress(geocoder, resultsMap) {
         toMarker = marker
         bounds.extend(marker.getPosition())
         resultsMap.fitBounds(bounds);
+        callback(document.getElementById('reqFrom').value, address, directionsService, directionsDisplay)
         } else {
             alert('Geocode was not successful for the following reason: ' + status);
         }
+    });
+}
+
+function giveDirs(from_addy, to_addy, directionsService, directionsDisplay) {
+    directionsService.route({
+      origin: from_addy,
+      destination: to_addy,
+      travelMode: 'DRIVING'
+    }, function(response, status) {
+      // Route the directions and pass the response to a function to create
+      // markers for each step.
+      if (status === 'OK') {
+        // document.getElementById('warnings-panel').innerHTML =
+        //     '<b>' + response.routes[0].warnings + '</b>';
+        directionsDisplay.setDirections(response);
+        // showSteps(response, markerArray, stepDisplay, map);
+      } else {
+        window.alert('Directions request failed due to ' + status);
+      }
     });
 }
 
@@ -217,8 +245,10 @@ function initMap() {
       center: myLatlng 
     });
     var geocoder = new google.maps.Geocoder();
+    var directionsService = new google.maps.DirectionsService;
+    var directionsDisplay = new google.maps.DirectionsRenderer({map: map});
     document.getElementById('submitAddresses').addEventListener('click', function() {
-      submitAddresses(geocoder, map);
+      submitAddresses(geocoder, map, directionsService, directionsDisplay);
     });
     // var myLatlng = {lat: -25.363, lng: 131.044};
     
