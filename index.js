@@ -62,10 +62,9 @@ var pool  = mysql.createPool(sqlParams);
 // });
 
 app.get("/write_sql", function(req, res){
-    dict = req.query;
+    var dict = req.query;
     dict['name'] = req.session.token.user_info['display_name'];
     dict['email'] = req.session.token.user_info['tj_email'];
-    console.log(dict['name'] + " " + dict['email'])
     pool.query('insert into pools set ?', dict, function(error, results, fields) {
        if (error) throw error; 
     });
@@ -79,7 +78,7 @@ app.get("/read_sql", function(req, res){
 });
 
 app.get("/del_sql", function(req, res){
-    pool.query('select name, email from pools where hash=?', req.query.hash,function(error, results, fields) {
+    pool.query('select * from pools where hash=?', req.query.hash,function(error, results, fields) {
         if (error) throw error; 
         // res.send(results);
        
@@ -92,18 +91,17 @@ app.get("/del_sql", function(req, res){
         });
         
         var mails = []
-        
         var mailOptions = {
           from: 'tjcarpool.noreply@gmail.com',
           to: results[0]['email'] ,
           subject: 'You are being hosted! (TJ Carpool)',
-          text: req.session.token.user_info['display_name'] + " has volunteered to drive you from " + results[0]['start'] + " to " + results[0]['destination'] + " at " + results[0]['time'] + "."
+          text: req.session.token.user_info['display_name'] + " has volunteered to drive you " + (results[0]['num'] == "0" ? "" : results[0]['num'] == "1" ? "and 1 other " : "and " + results[0]['num'] + " others ") + "from " + results[0]['start'] + " to " + results[0]['destination'] + " at " + results[0]['time'] + "."
         };
         var mailOptions2 = {
           from: 'tjcarpool.noreply@gmail.com',
           to: req.session.token.user_info['tj_email'],
           subject: 'You are hosting! (TJ Carpool)',
-          text: "You are driving " + results[0]['name'] + " (" + results[0]['email'] + ") from " + results[0]['start'] + " to " + results[0]['destination'] + " at " + results[0]['time'] + "."
+          text: "You are driving " + results[0]['name'] + " " + (results[0]['num'] == "0" ? "" : results[0]['num'] == "1" ? "and 1 other " : "and " + results[0]['num'] + " others ") + "from " + results[0]['start'] + " to " + results[0]['destination'] + " at " + results[0]['time'] + "."
         };
         
         transporter.sendMail(mailOptions, function(error, info){
@@ -244,7 +242,7 @@ app.get('/', function (req, res) {
             var res_object = JSON.parse(body);
             
             req.session.token.user_info = res_object;
-            console.log(res_object);
+            // console.log(res_object);
             
             // from this javascript object, extract the user's name
             // user_name = res_object['short_name'];

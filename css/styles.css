@@ -17,6 +17,9 @@
   width: 5%;
   height: 5%;
 }
+.padding-bottom {
+    margin-bottom: 25px;
+}
 #map {
   height: 100%;
 }

@@ -29,10 +29,10 @@ function sendRequest(){
     var reqFrom = document.getElementById("reqFrom").value;
     var reqNum = document.getElementById("reqNum").value;
     var reqTime = document.getElementById("reqTime").value;
-    console.log("hello");
+    console.log("reqNum: " + reqNum);
     var toHash = reqTo + reqFrom + reqNum + reqTime;
     var hash = toHash.hashCode();
-    var new_pool = {hash: hash, start: reqFrom, destination: reqTo, num: reqNum, time: reqTime};
+    var new_pool = {'hash': hash, 'start': reqFrom, 'destination': reqTo, 'num': reqNum, 'time': reqTime};
     
     $.ajax ({
         url: "write_sql",
@@ -50,7 +50,7 @@ function obliterate(){
 }
 
 function cycle(){
-    
+    console.log("hello")
     $.ajax ({
         url: "read_sql",
         type: "get",
@@ -77,16 +77,16 @@ function cycle(){
     });
 }
 
-fromMarker;
-toMarker;
+var fromMarker;
+var toMarker;
+var bounds;
 
-function submitAdresses(geocoder, resultsMap){
+function submitAddresses(geocoder, resultsMap){
     geocodeFromAddress(geocoder, resultsMap)
     geocodeToAddress(geocoder, resultsMap)
-    var bounds = new google.maps.LatLngBounds();
-    bounds.extend(fromMarker.getPosition());
-    bounds.extend(toMarker.getPosition());
-    resultsMap.fitBounds(bounds);
+    bounds = new google.maps.LatLngBounds();
+    // console.log(fromMarker.getPosition() + " " + toMarker.getPosition())
+    
 }
 
 
@@ -104,6 +104,8 @@ function geocodeFromAddress(geocoder, resultsMap) {
             fromMarker = null
         }
         fromMarker = marker
+        bounds.extend(marker.getPosition())
+        resultsMap.fitBounds(bounds);
         } else {
             alert('Geocode was not successful for the following reason: ' + status);
         }
@@ -123,6 +125,8 @@ function geocodeToAddress(geocoder, resultsMap) {
             toMarker.setMap(null)
         }
         toMarker = marker
+        bounds.extend(marker.getPosition())
+        resultsMap.fitBounds(bounds);
         } else {
             alert('Geocode was not successful for the following reason: ' + status);
         }
@@ -175,6 +179,7 @@ function makeCard(hash, name, to, from, num, time, timestamp){
         toHash_ = name+ from + to+ num+ time
         var elem = document.getElementById(hash);
         elem.parentNode.removeChild(elem);
+        // cycle();
         // console.log({name: name, start: from, destination: to, num: num, time: time})
     };
     
@@ -211,7 +216,10 @@ function initMap() {
       zoom: 14,
       center: myLatlng 
     });
-    
+    var geocoder = new google.maps.Geocoder();
+    document.getElementById('submitAddresses').addEventListener('click', function() {
+      submitAddresses(geocoder, map);
+    });
     // var myLatlng = {lat: -25.363, lng: 131.044};
     
     // var map = new google.maps.Map(document.getElementById('toMap'), {
@@ -219,4 +227,6 @@ function initMap() {
     //   center: myLatlng 
     // });
 }
-// document.getElementById("send_req_button").addEventListener("click", sendRequest);   
+document.getElementById("cleanser").addEventListener("click", cycle);  
+console.log("hi")
+
