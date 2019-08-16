@@ -37,6 +37,10 @@ function sendRequest(){
     var reqFrom = document.getElementById("reqFrom").value;
     var reqNum = document.getElementById("reqNum").value;
     var reqTime = document.getElementById("reqTime").value;
+    
+    reqNum = reqNum.charAt(0).toUpperCase() + reqNum.slice(1);
+    reqTime = reqTime.charAt(0).toUpperCase() + reqTime.slice(1);
+    
     console.log("reqNum: " + reqNum);
     var toHash = reqTo + reqFrom + reqNum + reqTime;
     var hash = toHash.hashCode();
@@ -211,6 +215,9 @@ function makeCard(hash, name, to, from, num, time, timestamp){
         // cycle();
         // console.log({name: name, start: from, destination: to, num: num, time: time})
     };
+    var cont = document.createElement('div');
+    cont.className = "row container justify-content-md-center";
+    
     
     var map_div = document.createElement('div');
     map_div.id = hash + "map_div"
@@ -242,8 +249,9 @@ function makeCard(hash, name, to, from, num, time, timestamp){
       }
     };
     
+    cont.appendChild(map_div)
     inner_1.appendChild(inner_2);
-    inner_1.appendChild(map_div);
+    inner_1.appendChild(cont);
     _div.appendChild(inner_1);
     _div.appendChild(btn);
     _div.appendChild(btn_2);
@@ -271,17 +279,17 @@ function makeListElement(hash, name, to, from, num, time, timestamp){
 }
 
 function initMap() {
-    var myLatlng = {lat: 38.818747, lng: -77.168755};
+    var myLatlng_ = {lat: 38.818747, lng: -77.168755};
     
-    var map = new google.maps.Map(document.getElementById('fromMap'), {
+    var map_ = new google.maps.Map(document.getElementById('fromMap'), {
       zoom: 14,
-      center: myLatlng 
+      center: myLatlng_ 
     });
-    var geocoder = new google.maps.Geocoder();
-    var directionsService = new google.maps.DirectionsService;
-    var directionsDisplay = new google.maps.DirectionsRenderer({map: map});
+    var geocoder_ = new google.maps.Geocoder();
+    var directionsService_ = new google.maps.DirectionsService;
+    var directionsDisplay_ = new google.maps.DirectionsRenderer({map: map_});
     document.getElementById('submitAddresses').addEventListener('click', function() {
-      submitAddresses(document.getElementById('reqFrom'), document.getElementById('reqTo'), geocoder, map, directionsService, directionsDisplay);
+      submitAddresses(document.getElementById('reqFrom').value, document.getElementById('reqTo').value, geocoder_, map_, directionsService_, directionsDisplay_);
     });
     // var myLatlng = {lat: -25.363, lng: 131.044};
     
@@ -290,6 +298,7 @@ function initMap() {
     //   center: myLatlng 
     // });
 }
-document.getElementById("cleanser").addEventListener("click", cycle);  
-console.log("hi")
+// google.maps.event.addDomListener(window, 'load', initialise);
+// document.getElementById("cleanser").addEventListener("click", cycle);  
+// console.log("hi")
 
