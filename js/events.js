@@ -228,7 +228,7 @@ function makeCard(hash, name, to, from, num, time, timestamp){
     var btn_2 = document.createElement('a');
     btn_2.id = hash + "btn2";
     btn_2.className = "btn btn-light close";
-    var node_4 = document.createTextNode("Show/Hide Map");
+    var node_4 = document.createTextNode("Show Map");
     btn_2.appendChild(node_4);
     
     btn_2.onclick = function(){
