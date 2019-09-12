@@ -22,7 +22,8 @@ app.use(cookieSession({
 }))
 
 
-app.set("port", process.env.PORT || 8080);
+// app.set("port", process.env.PORT || 8080);
+app.set("port", 80);
 app.set('trust proxy', 1);
 var path = require('path');
 
